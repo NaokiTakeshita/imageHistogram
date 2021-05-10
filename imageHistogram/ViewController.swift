@@ -49,7 +49,7 @@ class ViewController: NSViewController {
     @IBAction func loadImageBtn(_ sender: Any) {
         debug.reset(name: "load img")
         
-        guard let img = NSImage(named: "PIC - 13204") else {
+        guard let img = NSImage(named: "photo2") else {
             print("unable to load image")
             return
         }
@@ -72,6 +72,10 @@ class ViewController: NSViewController {
         debug.done()
         
         debug.reset(name: "make 3ch chart")
+        //histogramView.layer?.backgroundColor = CGColor.clear
+        histogramView.layer?.cornerRadius = 10.0
+        histogramView.layer?.borderColor = CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        histogramView.layer?.borderWidth = 1.5
         histogramView.layer?.backgroundColor = CGColor(red: 0.08, green: 0.08, blue: 0.08, alpha: 1)
         histogramView.colorMapData.append(ColorMapData(dataArray: r, color: NSColor.red))
         histogramView.colorMapData.append(ColorMapData(dataArray: g, color: NSColor.green))

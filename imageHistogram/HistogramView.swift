@@ -52,23 +52,43 @@ class HistogramView: NSView {
             map.color.setStroke()
             map.color.withAlphaComponent(0.2).setFill()
             
-            path.move(to: CGPoint(x: 0, y: 0))
+            path.lineWidth = 2.0
+            path.move(to: CGPoint(x: -5, y: -5))
             
             let dataCount = map.dataArray.count
             
-            let interpolateDistance = self.frame.width / CGFloat(dataCount)
+            let interpolateDistance = self.frame.width / CGFloat(dataCount - 1)
             
             
             for i in 0..<dataCount {
                 // current:max = yp:height
-                let yp = Float( map.dataArray[i] * UInt(self.frame.height) / max )
-         
-                let p:NSPoint = NSPoint(x: CGFloat(i) * interpolateDistance, y: CGFloat( yp))
-                path.line(to:p)
+                if i == 0{
+                    let yp = Float( map.dataArray[i] * UInt(self.frame.height) / max )
+                    
+                    let p_start:NSPoint = NSPoint(x: -5, y: CGFloat( yp))
+                    let p:NSPoint = NSPoint(x: CGFloat(i) * interpolateDistance, y: CGFloat( yp))
+                    path.line(to:p_start)
+                    path.line(to:p)
+                }else if i == dataCount - 1{
+                    
+                    let yp = Float( map.dataArray[i] * UInt(self.frame.height) / max )
+                    
+                    let p:NSPoint = NSPoint(x: CGFloat(i) * interpolateDistance, y: CGFloat( yp))
+                    let p_end:NSPoint = NSPoint(x: CGFloat(i) * interpolateDistance + 5, y: CGFloat( yp))
+                    path.line(to:p)
+                    path.line(to:p_end)
+                }else{
+                    let yp = Float( map.dataArray[i] * UInt(self.frame.height) / max )
+                    
+                    let p:NSPoint = NSPoint(x: CGFloat(i) * interpolateDistance, y: CGFloat( yp))
+                    path.line(to:p)
+                }
             }
             
-            path.line(to: NSPoint(x: 255 * interpolateDistance, y: 0))
-            path.line(to: NSPoint(x: 0, y: 0))
+            path.relativeLine(to: NSPoint(x: 5, y: 0))
+            path.line(to: NSPoint(x: 255 * interpolateDistance + 5, y: -5))
+//            path.line(to: NSPoint(x: 255 * interpolateDistance, y: 0))
+//            path.line(to: NSPoint(x: 0, y: 0))
             
             
             path.stroke()
